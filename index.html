@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>20 Ճոխ Hover Անիմացիաներ</title>
+  <style>
+    :root {
+      --bg-deep: #07090e;
+      --card-bg: rgba(20, 25, 38, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(56, 189, 248, 0.55);
+      --text-main: #f8fafc;
+      --text-dim: #7c8b9e;
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --pink: #f472b6;
+      --emerald: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(129, 140, 248, 0.12) 0%, transparent 45%);
+      color: var(--text-main);
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    header {
+      max-width: 1240px;
+      margin: 0 auto 2.5rem auto;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.6rem;
+    }
+
+    header p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 1.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      aspect-ratio: 1 / 1;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 45%, rgba(56, 189, 248, 0.14), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 18px 40px -12px rgba(56, 189, 248, 0.25),
+                  0 0 20px rgba(56, 189, 248, 0.1);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .card-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 3px 9px;
+      border-radius: 99px;
+      letter-spacing: 0.05em;
+    }
+
+    .hover-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover .hover-dot {
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .card-title {
+      text-align: center;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.01em;
+      z-index: 2;
+    }
+
+    /* Սկզբնական թաքնված վիճակ (առանց ներքին transform-ին խանգարելու) */
+    .anim-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .anim-stage *,
+    .anim-stage *::before,
+    .anim-stage *::after {
+      animation-play-state: paused !important;
+    }
+
+    /* Hover-ի ժամանակ հայտնվելը և միանալը */
+    .card:hover .anim-stage {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card:hover .anim-stage *,
+    .card:hover .anim-stage *::before,
+    .card:hover .anim-stage *::after {
+      animation-play-state: running !important;
+    }
+
+    /* 1. Spinner Arc */
+    .spinner-arc {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 4px solid rgba(56, 189, 248, 0.14);
+      border-top-color: var(--cyan);
+      border-right-color: var(--indigo);
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
+      animation: spin 0.85s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 2. Bouncing Dots */
+    .bouncing-dots {
+      display: flex;
+      gap: 9px;
+    }
+    .bouncing-dots span {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--indigo));
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.45);
+      animation: bounceDot 0.6s ease-in-out infinite alternate;
+    }
+    .bouncing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .bouncing-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounceDot {
+      from { transform: translateY(7px) scale(0.9); opacity: 0.5; }
+      to { transform: translateY(-11px) scale(1.1); opacity: 1; }
+    }
+
+    /* 3. Pulse Rings */
+    .pulse-rings {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pulse-core {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+    }
+    .pulse-rings span {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      animation: pulseRing 2s ease-out infinite;
+    }
+    .pulse-rings span:nth-child(2) { animation-delay: 0.65s; }
+    .pulse-rings span:nth-child(3) { animation-delay: 1.3s; }
+    @keyframes pulseRing {
+      0% { transform: scale(0.2); opacity: 0.95; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+
+    /* 4. Indeterminate Bar */
+    .indeterminate-bar {
+      width: 135px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+    .indeterminate-bar::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 48%;
+      background: linear-gradient(90deg, var(--indigo), var(--cyan), var(--pink));
+      border-radius: 99px;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+      animation: slideBar 1.25s ease-in-out infinite;
+    }
+    @keyframes slideBar {
+      0% { left: -50%; }
+      100% { left: 105%; }
+    }
+
+    /* 5. Rich Skeleton Shimmer */
+    .skeleton-card {
+      width: 155px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .skel-top {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .skel-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .skel-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .skel-shimmer {
+      background: linear-gradient(
+        100deg,
+        rgba(255, 255, 255, 0.06) 20%,
+        rgba(56, 189, 248, 0.22) 50%,
+        rgba(255, 255, 255, 0.06) 80%
+      );
+      background-size: 220% 100%;
+      animation: shimmer 1.4s infinite linear;
+    }
+    .skel-line {
+      height: 8px;
+      border-radius: 99px;
+    }
+    .skel-line.w-80 { width: 80%; }
+    .skel-line.w-55 { width: 55%; }
+    .skel-line.w-100 { width: 100%; }
+    .skel-line.w-70 { width: 70%; }
+    @keyframes shimmer {
+      0% { background-position: 220% 0; }
+      100% { background-position: -220% 0; }
+    }
+
+    /* 6. Orbit */
+    .orbit {
+      width: 64px;
+      height: 64px;
+      border: 1px dashed rgba(129, 140, 248, 0.4);
+      border-radius: 50%;
+      position: relative;
+      animation: spin 2s linear infinite;
+    }
+    .orbit::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle at 30% 30%, #a5b4fc, var(--indigo));
+      box-shadow: 0 0 15px var(--indigo);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .orbit::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+      border-radius: 50%;
+      top: -5.5px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* 7. Equalizer Bars */
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 46px;
+    }
+    .eq-bars span {
+      width: 6px;
+      height: 10px;
+      background: linear-gradient(to top, var(--indigo), var(--cyan));
+      border-radius: 99px;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+      animation: eqGrow 0.55s ease-in-out infinite alternate;
+    }
+    .eq-bars span:nth-child(2) { animation-delay: 0.18s; }
+    .eq-bars span:nth-child(3) { animation-delay: 0.36s; }
+    .eq-bars span:nth-child(4) { animation-delay: 0.12s; }
+    .eq-bars span:nth-child(5) { animation-delay: 0.28s; }
+    @keyframes eqGrow {
+      0% { height: 10px; }
+      100% { height: 44px; }
+    }
+
+    /* 8. Square Morph */
+    .square-morph {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, var(--cyan), var(--indigo));
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.35);
+      animation: morphShape 2s ease-in-out infinite;
+    }
+    @keyframes morphShape {
+      0%, 100% { border-radius: 8px; transform: rotate(0deg) scale(1); }
+      50% { border-radius: 50%; transform: rotate(180deg) scale(1.1); background: linear-gradient(135deg, var(--pink), var(--indigo)); }
+    }
+
+    /* 9. Liquid Fill */
+    .liquid-fill {
+      width: 58px;
+      height: 58px;
+      border: 2px solid rgba(56, 189, 248, 0.7);
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+    .liquid-fill::after {
+      content: "";
+      position: absolute;
+      width: 170%;
+      height: 170%;
+      background: linear-gradient(180deg, var(--cyan), var(--indigo));
+      border-radius: 38%;
+      left: -35%;
+      top: 100%;
+      animation: fillWave 2.6s ease-in-out infinite;
+    }
+    @keyframes fillWave {
+      0% { top: 100%; transform: rotate(0deg); }
+      50% { top: 12%; transform: rotate(180deg); }
+      100% { top: 100%; transform: rotate(360deg); }
+    }
+
+    /* 10. Dot Grid Wave */
+    .dot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .dot-grid span {
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
+      animation: gridWave 1.2s ease-in-out infinite;
+    }
+    .dot-grid span:nth-child(2), .dot-grid span:nth-child(4) { animation-delay: 0.15s; }
+    .dot-grid span:nth-child(3), .dot-grid span:nth-child(5), .dot-grid span:nth-child(7) { animation-delay: 0.3s; }
+    .dot-grid span:nth-child(6), .dot-grid span:nth-child(8) { animation-delay: 0.45s; }
+    .dot-grid span:nth-child(9) { animation-delay: 0.6s; }
+    @keyframes gridWave {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.3); opacity: 0.3; }
+    }
+
+    /* 11. Infinity Trail */
+    .infinity-trail {
+      width: 96px;
+      height: 48px;
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
+    }
+    .infinity-trail .bg-path {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .infinity-trail .glow-path {
+      fill: none;
+      stroke: url(#infGrad);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 55 175;
+      animation: infinityDash 1.5s linear infinite;
+    }
+    @keyframes infinityDash {
+      0% { stroke-dashoffset: 230; }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    /* 12. Flipping Square */
+    .flipping-square {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--indigo), var(--pink));
+      border-radius: 9px;
+      box-shadow: 0 8px 20px rgba(129, 140, 248, 0.35);
+      animation: flipBox 1.5s ease-in-out infinite;
+    }
+    @keyframes flipBox {
+      0% { transform: perspective(150px) rotateX(0deg) rotateY(0deg); }
+      50% { transform: perspective(150px) rotateX(-180deg) rotateY(0deg); }
+      100% { transform: perspective(150px) rotateX(-180deg) rotateY(-180deg); }
+    }
+
+    /* 13. Gradient Ring */
+    .gradient-ring {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 5%, var(--cyan), var(--indigo), var(--pink));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 0);
+      mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 0);
+      filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.45));
+      animation: spin 0.9s linear infinite;
+    }
+
+    /* 14. Typing Dots */
+    .typing-bubble {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 16px;
+      border-radius: 18px 18px 18px 4px;
+      display: flex;
+      gap: 6px;
+    }
+    .typing-bubble span {
+      width: 8px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: typePulse 1.2s infinite ease-in-out;
+    }
+    .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typePulse {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
+      40% { transform: scale(1.15); opacity: 1; }
+    }
+
+    /* 15. Spoke Spinner */
+    .spoke-spinner {
+      position: relative;
+      width: 50px;
+      height: 50px;
+    }
+    .spoke-spinner span {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 12px;
+      margin-left: -2px;
+      background: var(--cyan);
+      border-radius: 99px;
+      transform-origin: 2px 25px;
+      animation: spokeFade 0.8s linear infinite;
+    }
+    @keyframes spokeFade {
+      0% { opacity: 1; box-shadow: 0 0 8px var(--cyan); }
+      100% { opacity: 0.12; box-shadow: none; }
+    }
+
+    /* 16. Percent Bar */
+    .percent-wrap {
+      width: 135px;
+    }
+    .percent-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .percent-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .percent-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--indigo), var(--cyan));
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      border-radius: 99px;
+    }
+
+    /* 17. Chasing Squares */
+    .chasing-squares {
+      width: 48px;
+      height: 48px;
+      position: relative;
+    }
+    .chasing-squares span {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--cyan);
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      animation: chasePath 1.6s ease-in-out infinite;
+    }
+    .chasing-squares span:nth-child(2) {
+      background: var(--pink);
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
+      animation-delay: -0.8s;
+    }
+    @keyframes chasePath {
+      0%, 100% { top: 0; left: 0; }
+      25% { top: 0; left: 32px; }
+      50% { top: 32px; left: 32px; }
+      75% { top: 32px; left: 0; }
+    }
+
+    /* 18. Text Shimmer */
+    .text-shimmer {
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.14em;
+      background: linear-gradient(90deg, #475569 0%, #ffffff 45%, #38bdf8 55%, #475569 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShine 1.8s linear infinite;
+    }
+    @keyframes textShine {
+      to { background-position: 200% center; }
+    }
+
+    /* 19. Battery Charge */
+    .battery {
+      width: 72px;
+      height: 34px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 7px;
+      padding: 3px;
+      position: relative;
+    }
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      top: 8px;
+      width: 4px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 0 3px 3px 0;
+    }
+    .battery-level {
+      height: 100%;
+      width: 15%;
+      border-radius: 3px;
+      animation: chargeUp 2.2s ease-in-out infinite;
+    }
+    @keyframes chargeUp {
+      0% { width: 15%; background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+      50% { width: 55%; background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+      100% { width: 100%; background: var(--emerald); box-shadow: 0 0 12px var(--emerald); }
+    }
+
+    /* 20. Bouncing Ball */
+    .bounce-stage {
+      height: 66px;
+      width: 66px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .ball {
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #7dd3fc, var(--cyan), var(--indigo));
+      border-radius: 50%;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+      animation: ballJump 0.72s cubic-bezier(0.33, 0, 0.66, 0.33) infinite alternate;
+    }
+    .ball-shadow {
+      width: 24px;
+      height: 5px;
+      background: rgba(56, 189, 248, 0.35);
+      border-radius: 50%;
+      margin-top: 2px;
+      filter: blur(1px);
+      animation: shadowScale 0.72s ease-in infinite alternate;
+    }
+    @keyframes ballJump {
+      0% { transform: translateY(-38px) scale(1, 1); }
+      85% { transform: translateY(0) scale(1, 1); }
+      100% { transform: translateY(2px) scale(1.28, 0.72); }
+    }
+    @keyframes shadowScale {
+      0% { transform: scale(0.35); opacity: 0.15; }
+      100% { transform: scale(1.15); opacity: 0.75; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>20 UI Motion & Loading Animations</h1>
+    <p>Պահեք մկնիկը ցանկացած քարտի վրա՝ թաքնված անիմացիան բացելու համար</p>
+  </header>
+
+  <main class="grid" id="grid"></main>
+
+  <script>
+    var animations = [
+      { name: "Spinner Arc", html: '<div class="spinner-arc"></div>' },
+      { name: "Bouncing Dots", html: '<div class="bouncing-dots"><span></span><span></span><span></span></div>' },
+      { name: "Pulse Rings", html: '<div class="pulse-rings"><div class="pulse-core"></div><span></span><span></span><span></span></div>' },
+      { name: "Indeterminate Bar", html: '<div class="indeterminate-bar"></div>' },
+      {
+        name: "Skeleton Shimmer",
+        html:
+          '<div class="skeleton-card">' +
+            '<div class="skel-top">' +
+              '<div class="skel-avatar skel-shimmer"></div>' +
+              '<div class="skel-col">' +
+                '<div class="skel-line w-80 skel-shimmer"></div>' +
+                '<div class="skel-line w-55 skel-shimmer"></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="skel-line w-100 skel-shimmer"></div>' +
+            '<div class="skel-line w-70 skel-shimmer"></div>' +
+          '</div>'
+      },
+      { name: "Orbit", html: '<div class="orbit"></div>' },
+      { name: "Equalizer Bars", html: '<div class="eq-bars"><span></span><span></span><span></span><span></span><span></span></div>' },
+      { name: "Square Morph", html: '<div class="square-morph"></div>' },
+      { name: "Liquid Fill", html: '<div class="liquid-fill"></div>' },
+      { name: "Dot Grid Wave", html: '<div class="dot-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>' },
+      {
+        name: "Infinity Trail",
+        html:
+          '<svg class="infinity-trail" viewBox="0 0 120 60">' +
+            '<defs>' +
+              '<linearGradient id="infGrad" x1="0%" y1="0%" x2="100%" y2="0%">' +
+                '<stop offset="0%" stop-color="#818cf8" />' +
+                '<stop offset="50%" stop-color="#38bdf8" />' +
+                '<stop offset="100%" stop-color="#f472b6" />' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<path class="bg-path" d="M 60,30 C 42,10 12,10 12,30 C 12,50 42,50 60,30 C 78,10 108,10 108,30 C 108,50 78,50 60,30 Z" />' +
+            '<path class="glow-path" d="M 60,30 C 42,10 12,10 12,30 C 12,50 42,50 60,30 C 78,10 108,10 108,30 C 108,50 78,50 60,30 Z" />' +
+          '</svg>'
+      },
+      { name: "Flipping Square", html: '<div class="flipping-square"></div>' },
+      { name: "Gradient Ring", html: '<div class="gradient-ring"></div>' },
+      { name: "Typing Dots", html: '<div class="typing-bubble"><span></span><span></span><span></span></div>' },
+      { name: "Spoke Spinner", html: buildSpokes() },
+      {
+        name: "Percent Bar",
+        html:
+          '<div class="percent-wrap">' +
+            '<div class="percent-label"><span>LOADING</span><span class="percent-text">0%</span></div>' +
+            '<div class="percent-track"><div class="percent-fill"></div></div>' +
+          '</div>'
+      },
+      { name: "Chasing Squares", html: '<div class="chasing-squares"><span></span><span></span></div>' },
+      { name: "Text Shimmer", html: '<div class="text-shimmer">LOADING</div>' },
+      { name: "Battery Charge", html: '<div class="battery"><div class="battery-level"></div></div>' },
+      { name: "Bouncing Ball", html: '<div class="bounce-stage"><div class="ball"></div><div class="ball-shadow"></div></div>' }
+    ];
+
+    function buildSpokes() {
+      var html = '<div class="spoke-spinner">';
+      for (var i = 0; i < 8; i++) {
+        var angle = i * 45;
+        var delay = (i * 0.1).toFixed(1);
+        html += '<span style="transform: rotate(' + angle + 'deg); animation-delay: ' + delay + 's;"></span>';
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function setupPercentCounter(card) {
+      var textEl = card.querySelector(".percent-text");
+      var fillEl = card.querySelector(".percent-fill");
+      var timer = null;
+      var value = 0;
+
+      card.onmouseenter = function () {
+        if (timer) clearInterval(timer);
+        timer = setInterval(function () {
+          value += 2;
+          if (value > 100) value = 0;
+          textEl.textContent = value + "%";
+          fillEl.style.width = value + "%";
+        }, 35);
+      };
+
+      card.onmouseleave = function () {
+        clearInterval(timer);
+        value = 0;
+        textEl.textContent = "0%";
+        fillEl.style.width = "0%";
+      };
+    }
+
+    function renderCards() {
+      var grid = document.getElementById("grid");
+      for (var i = 0; i < animations.length; i++) {
+        var num = (i + 1 < 10 ? "0" : "") + (i + 1);
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML =
+          '<div class="card-header">' +
+            '<span class="card-num">' + num + '</span>' +
+            '<span class="hover-dot"></span>' +
+          '</div>' +
+          '<div class="anim-stage">' + animations[i].html + '</div>' +
+          '<div class="card-title">' + animations[i].name + '</div>';
+
+        grid.appendChild(card);
+
+        if (animations[i].name === "Percent Bar") {
+          setupPercentCounter(card);
+        }
+      }
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>
